@@ -136,7 +136,7 @@ Para que el ingeniero Yoel y la gerencia de **El Patito Feliz** vean que el sist
 
 ### 4. Mean Time to Recover - MTTR (Seguridad/Operación)
 * **Definición:** ¿Cuánto tiempo tardamos, en promedio, desde que algo falla hasta que el servicio vuelve a estar normal?
-* **Por qué importa:** Los fallos van a ocurrir, lo importante es qué tan rápido reaccionamos para que el cliente ni se de cuenta.
+* **Por qué importa:** Los fallos van a ocurrir, lo importante es qué tan rápido reaccionamos para que el cliente ni se de cuenta
 * **Cómo la mediría:** Registrando la hora en que salta una alerta de incidente y la hora en que se marca como "resuelto" en nuestro log de errores.
 
 

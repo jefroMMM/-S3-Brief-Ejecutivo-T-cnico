@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant U as Postman
     participant O as Orders Service
@@ -16,4 +17,4 @@ sequenceDiagram
     Note over L: Procesa lógica de negocio
     L->>L: Generar Guía: PAT-MX-XXXX
     L->>L: Calcular Fecha Entrega
-    Note right of L: Log: ¡Orden procesada!
+    Note right of L: Log: Orden procesada
