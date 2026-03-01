@@ -25,9 +25,9 @@ Guía de Inicio Rápido
 1. Levantar la Infraestructura (Docker)
 Desde la raíz del proyecto, ejecuta:
 
-  ```Bash
-   docker compose up -d
-   ```
+```Bash
+docker compose up -d
+```
 Ver en docker que los contenedores queden en estado up
   
 
@@ -37,8 +37,8 @@ Abre una terminal y ejecuta:
 cd orders-service
 npm install
 npm run dev
-El servidor subirá en http://localhost:3000.
 ```
+El servidor subirá en http://localhost:3000.
 
 3. Iniciar el Servicio de Logística (Consumer)
 Abre una segunda terminal y ejecuta:
@@ -57,9 +57,9 @@ Crea una petición POST a: http://localhost:3000/orden
 En el Body, selecciona raw > JSON y pega:
 ```JSON
 {
-  "producto": "Teclado Mecánico RGB",
-  "precio": 85.00,
-  "cliente": "TuNombre"
+  "producto": "Mouse blanco, rgb ",
+  "precio": 130.00,
+  "cliente": "Nombre del cliente"
 }
 ```
 Presiona Send.

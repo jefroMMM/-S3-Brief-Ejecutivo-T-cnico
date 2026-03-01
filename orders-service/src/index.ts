@@ -19,7 +19,6 @@ app.get('/', (c) => c.text('API de Órdenes del Patito Feliz lista! 🦆'))
 
 app.post('/orden', async (c) => {
     try {
-      // Agregamos un check para ver qué está llegando
       const body = await c.req.json().catch(() => null);
       
       if (!body) {
@@ -36,11 +35,11 @@ app.post('/orden', async (c) => {
         ],
       });
       
-      console.log(`✅ Orden enviada a Kafka: ${producto}`);
+      console.log(`Orden enviada a Kafka: ${producto}`);
       return c.json({ mensaje: "Orden enviada a Kafka", cliente });
   
     } catch (error) {
-      console.error('❌ Error real:', error);
+      console.error(' Error real:', error);
       return c.json({ error: 'Fallo en el proceso', details: error.message }, 500);
     }
   })

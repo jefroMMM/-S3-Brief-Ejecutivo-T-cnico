@@ -19,7 +19,7 @@ const run = async () => {
   await consumer.connect()
   await consumer.subscribe({ topic: 'compras-gaming', fromBeginning: false })
 
-  console.log('🚛 [LOGÍSTICA] Sistema de Tracking activado. Esperando órdenes...');
+  console.log('[LOGÍSTICA] esperando creación de órdenes');
 
   await consumer.run({
     eachMessage: async ({ message }) => {
@@ -30,13 +30,12 @@ const run = async () => {
       const fechaEstimada = calcularFechaEntrega();
 
       console.log('==================================================')
-      console.log(`📦 ¡ORDEN PROCESADA PARA ENVÍO!`)
-      console.log(`🎮 Producto: ${order.producto}`)
-      console.log(`👤 Cliente:  ${order.cliente}`)
-      console.log(`🆔 Guía No:  ${trackingId}`)
-      console.log(`📅 Entrega:  ${fechaEstimada}`)
+      console.log(`Orden procesada para despacho`)
+      console.log(`Producto: ${order.producto}`)
+      console.log(`Cliente:  ${order.cliente}`)
+      console.log(`Guía No:  ${trackingId}`)
+      console.log(`Entrega:  ${fechaEstimada}`)
       console.log('--------------------------------------------------')
-      console.log('🦆💨 El patito repartidor ha salido del almacén.')
     },
   })
 }
