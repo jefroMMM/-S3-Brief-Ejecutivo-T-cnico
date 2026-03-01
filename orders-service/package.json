@@ -1,0 +1,16 @@
+{
+    "name": "orders-service",
+    "type": "module",
+    "scripts": {
+      "dev": "tsx watch src/index.ts"
+    },
+    "dependencies": {
+      "hono": "^4.0.0",
+      "@hono/node-server": "^1.8.2",
+      "kafkajs": "^2.2.4"
+    },
+    "devDependencies": {
+      "tsx": "^4.7.1",
+      "@types/node": "^20.11.17"
+    }
+  }

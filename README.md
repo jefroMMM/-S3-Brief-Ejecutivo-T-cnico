@@ -1,45 +1,72 @@
-# Brief Ejecutivo-Técnico: Estrategia de Plataforma Retail
+# El Patito Feliz - Sistema de Órdenes 
+Proyecto de arquitectura de Microservicios Dirigidos por Eventos para la gestión automatizada de ventas de accesorios tecnológicos. El sistema utiliza Apache Kafka como columna vertebral para comunicar la venta con la logística de envío de forma asíncrona.
 
-## A1) Arquitectura Aplicada al Caso
+# Estructura del Proyecto
+/orders-service: API REST construida con Hono que actúa como Producer. Recibe compras y las publica en el topic compras-.
 
-Para nuestra organización de Retail, hemos adaptado el mapa de arquitectura empresarial del curso enfocándonos en un modelo de **Microservicios dirigidos por eventos (Event-Driven Architecture)**. Este enfoque nos permite escalar de manera independiente el proceso de ventas de la logística y los pagos.
+/logistics-service: Microservicio Consumer que escucha Kafka, genera números de guía automáticos (PAT-MX-XXXXXX) y calcula fechas de entrega.
 
-### Identificación de Componentes:
+/docs/brief.md: Documentación estratégica (Arquitectura, COBIT, NIST y Métricas DORA).
 
-* **System of Record (Núcleo):** Nuestro ERP central actúa como la fuente única de verdad para la contabilidad y el inventario maestro.
-* **Sistemas Satélite:** * **Orders Service (Hono):** Gestiona la captura de nuevas ventas.
-    * **Logistics Service (Hono):** Se encarga del despacho y tracking.
-    * **Payments Service:** Procesa las transacciones financieras.
-    * **Notifications Service:** Gestiona la comunicación omnicanal con el cliente.
-* **Flujo hacia BI:** Todos los eventos capturados en nuestro Broker (Kafka) son persistidos mediante un conector hacia un Data Lake para análisis de comportamiento de compra y reportes en tiempo real.
+docker-compose.yml: Orquestación de la infraestructura de mensajería (Kafka + Zookeeper).
 
-### Diagrama de Arquitectura (Mermaid)
+Tecnologías Usadas
+Framework: Hono.dev 
 
-```mermaid
-flowchart TD
-    subgraph Client_Layer
-        User((Cliente)) -->|Realiza Orden| Orders[Orders Service - Hono]
-    end
+Runtime: Node.js con tsx para ejecución directa de TypeScript.
 
-    subgraph Event_Bus [Broker / Event Queue]
-        Kafka[(Kafka Broker)]
-    end
+Mensajería: Apache Kafka.
 
-    subgraph Satellite_Systems [Sistemas Satélite]
-        Orders -->|order_created| Kafka
-        Kafka -->|order_created| Logistics[Logistics Service]
-        Kafka -->|order_created| Payments[Payments Service]
-        
-        Logistics -->|delivery_created| Kafka
-        Kafka -->|order_created / delivery_created| Notifications[Notifications Service]
-    end
+Contenedores: Docker & Docker Compose.
 
-    subgraph Core_System [System of Record]
-        Kafka -.->|Sync| ERP[ERP Central]
-    end
+Guía de Inicio Rápido
 
-    subgraph Analytics
-        Kafka -->|Stream| BI[Business Intelligence]
-    end
 
-    Notifications -->|Email/SMS| User
+1. Levantar la Infraestructura (Docker)
+Desde la raíz del proyecto, ejecuta:
+
+  ```Bash
+   docker compose up -d
+   ```
+Ver en docker que los contenedores queden en estado up
+  
+
+2. Iniciar el Servicio de Órdenes
+Abre una terminal y ejecuta:
+```Bash
+cd orders-service
+npm install
+npm run dev
+El servidor subirá en http://localhost:3000.
+```
+
+3. Iniciar el Servicio de Logística (Consumer)
+Abre una segunda terminal y ejecuta:
+
+```Bash
+cd logistics-service
+npm install
+npm run dev
+```
+Este servicio se quedará "escuchando" eventos de Kafka en tiempo real.
+
+Cómo probar el sistema
+Abre Postman.
+Crea una petición POST a: http://localhost:3000/orden
+
+En el Body, selecciona raw > JSON y pega:
+```JSON
+{
+  "producto": "Teclado Mecánico RGB",
+  "precio": 85.00,
+  "cliente": "TuNombre"
+}
+```
+Presiona Send.
+
+Resultado: Verás la confirmación en Postman y, automáticamente, en la terminal de Logística aparecerá el ticket con su Número de Guía y Fecha Estimada de Entrega.
+
+Solución de Problemas
+Error de conexión a Kafka: Si el servicio de órdenes falla, asegúrate de que Kafka esté corriendo en Docker.
+
+Zookeeper Not Ready: Kafka depende de Zookeeper. Si Kafka se apaga solo al inicio, reinicia con docker compose restart.
